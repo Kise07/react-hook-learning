@@ -1,4 +1,5 @@
-import React from 'react' // Whole React Import to Use Component 
+// Life Cycle Events
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
@@ -10,25 +11,23 @@ function App() {
   )
 }
 
-// Component extended from React Library
-class MyComponent extends React.Component {
-  constructor(props) { // Constructor Use
-    super(props); // Super Keyword Use
-    this.state = { count: 0 };
-  }
-  
-  incrementCount = () => { // Function Definition
-    this.setState({ count: this.state.count + 1 });
-  }
+function MyComponent() {
+  useEffect(() => {
+    // Perform setup or data fetching here
+    console.error("component mounted");
 
-  render() { // Render Keyword Use
-    return (
-      <div>
-        <p>{this.state.count}</p>
-        <button onClick={this.incrementCount}>Increment</button>
-      </div>
-    );
-  }
+    return () => {
+      // Cleanup code (similar to componentWillUnmount)
+      console.log("component unmount");
+    }
+  }, []);
+
+  // Render UI
+  return (
+    <div>
+      From inside my component
+    </div>
+  )
 }
 
 export default App
