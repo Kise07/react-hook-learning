@@ -6,9 +6,9 @@ function App() { // Unmount Example used both Hooks
   const [render, setRender] = useState(true); // useState()
 
   useEffect(() => { // useEffect()
-    setTimeout(() => { // Timer for Unmounting
-      setRender(false);
-    }, 10000)
+    setInterval(() => { // Interval for Unmounting/Mounting every 5 sec
+      setRender(r => !r); // Function def for [Render is True/False]
+    }, 5000)
   }, []);
 
   return (
