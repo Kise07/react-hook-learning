@@ -1,5 +1,5 @@
 // Life Cycle Events
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 
 function App() { // Unmount Example used both Hooks
@@ -13,28 +13,26 @@ function App() { // Unmount Example used both Hooks
 
   return (
     <>
-      {render ? <MyComponent /> : <div>2nd div</div>}
+      {render ? <MyComponent /> : <div></div>}
     </>
   )
 }
 
-function MyComponent() {
-  useEffect(() => {
+class MyComponent extends React.Component {
+  componentDidMount() {
     // Perform setup or data fetching here
-    console.error("component mounted");
+    console.log("component mounted");
+  }
 
-    return () => {
-      // Cleanup code (similar to componentWillUnmount)
-      console.log("component unmount");
-    }
-  }, []);
+  componentWillUnmount() {
+    // Clean up (e.g., remove event listeners or cancel subscriptions)
+    console.log("unmounted");
+  }
 
-  // Render UI
-  return (
-    <div>
-      From inside my component
-    </div>
-  )
+  render() {
+    // Render UI
+    return <div>hi there</div>
+  }
 }
 
 export default App
