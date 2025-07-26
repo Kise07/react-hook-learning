@@ -2,11 +2,18 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-function App() {
+function App() { // Unmount Example used both Hooks
+  const [render, setRender] = useState(true); // useState()
+
+  useEffect(() => { // useEffect()
+    setTimeout(() => { // Timer for Unmounting
+      setRender(false);
+    }, 10000)
+  }, []);
 
   return (
     <>
-      <MyComponent />
+      {render ? <MyComponent /> : <div>2nd div</div>}
     </>
   )
 }
