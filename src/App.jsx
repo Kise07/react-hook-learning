@@ -1,38 +1,52 @@
-// Life Cycle Events
-import React, { useEffect, useState } from 'react'
-import './App.css'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
-function App() { // Unmount Example used both Hooks
-  const [render, setRender] = useState(true); // useState()
+function useTodos(n) {
+  const [todos, setTodos] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => { // useEffect()
-    setInterval(() => { // Interval for Unmounting/Mounting every 5 sec
-      setRender(r => !r); // Function def for [Render is True/False]
-    }, 5000)
-  }, []);
+  useEffect(() => {
+    const value = setInterval(() => {
+      axios.get("http://localhost:3000/todos")
+        .then(res => {
+          setTodos(res.data);
+          setLoading(false);
+        })
+    }, n * 1000)
+    axios.get("http://localhost:3000/todos")
+      .then(res => {
+        setTodos(res.data);
+        setLoading(false);
+      })
+
+    return () => {
+      clearInterval(value)
+    }
+  }, [n])
+
+  return { todos, loading };
+}
+
+function App() {
+  const { todos, loading } = useTodos(5);
+
+  if (loading) {
+    return <div> Loading... </div>
+  }
 
   return (
     <>
-      {render ? <MyComponent /> : <div></div>}
+      {todos.map(todo => <Track todo={todo} />)}
     </>
   )
 }
 
-class MyComponent extends React.Component {
-  componentDidMount() {
-    // Perform setup or data fetching here
-    console.log("component mounted");
-  }
-
-  componentWillUnmount() {
-    // Clean up (e.g., remove event listeners or cancel subscriptions)
-    console.log("unmounted");
-  }
-
-  render() {
-    // Render UI
-    return <div>hi there</div>
-  }
+function Track({ todo }) {
+  return <div>
+    {todo.title}
+    <br />
+    {todo.description}
+  </div>
 }
 
 export default App
