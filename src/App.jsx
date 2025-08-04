@@ -1,44 +1,12 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-
-function useTodos(n) {
-  const [todos, setTodos] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const value = setInterval(() => {
-      axios.get("http://localhost:3000/todos")
-        .then(res => {
-          setTodos(res.data);
-          setLoading(false);
-        })
-    }, n * 1000)
-    axios.get("http://localhost:3000/todos")
-      .then(res => {
-        setTodos(res.data);
-        setLoading(false);
-      })
-
-    return () => {
-      clearInterval(value)
-    }
-  }, [n])
-
-  return { todos, loading };
-}
+import { useisOnline } from './hooks/useIsOnline';
 
 function App() {
-  const { todos, loading } = useTodos(5);
-
-  if (loading) {
-    return <div> Loading... </div>
+  const isOnline = useisOnline();
+  if (isOnline) {
+    return "You are online yay!"
   }
 
-  return (
-    <>
-      {todos.map(todo => <Track todo={todo} />)}
-    </>
-  )
+  return "You are offline, please connect to the internet"
 }
 
 function Track({ todo }) {
